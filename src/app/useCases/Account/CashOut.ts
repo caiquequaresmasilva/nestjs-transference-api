@@ -3,7 +3,7 @@ import { ClientRepository, TransactionRepository } from '@app/repositories';
 import { Transaction } from '@domain/Transaction';
 
 interface CashOutRequest {
-  fromClientUSername: string;
+  fromClientUsername: string;
   toClientUsername: string;
   amount: number;
 }
@@ -19,12 +19,12 @@ export class CashOut {
   ) {}
 
   async execute({
-    fromClientUSername,
+    fromClientUsername,
     toClientUsername,
     amount,
   }: CashOutRequest): Promise<CashOutResponse> {
     const [fromClient, toClient] = await Promise.all([
-      this.clientRepository.findByUsername(fromClientUSername),
+      this.clientRepository.findByUsername(fromClientUsername),
       this.clientRepository.findByUsername(toClientUsername),
     ]);
 
@@ -40,6 +40,8 @@ export class CashOut {
       debitedAccount: fromClient.account,
       creditedAccount: toClient.account,
     });
+
+    transaction.executeTransference();
 
     await this.transactionRepository.create(transaction);
     return { transaction };
