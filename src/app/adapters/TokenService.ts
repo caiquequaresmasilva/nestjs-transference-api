@@ -1,4 +1,4 @@
-interface PayloadProps {
+export interface PayloadProps {
   id: string;
   username: string;
   accountId: string;
