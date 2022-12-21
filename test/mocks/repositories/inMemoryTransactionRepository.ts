@@ -6,4 +6,10 @@ export class InMemoryTransactionRepository implements TransactionRepository {
   async create(data: Transaction): Promise<void> {
     this.transactions.push(data);
   }
+
+  async findManyByAccountId(accountId: string): Promise<Transaction[]> {
+    return this.transactions.filter(({ creditedAccount, debitedAccount }) =>
+      [creditedAccount.id, debitedAccount.id].includes(accountId),
+    );
+  }
 }
