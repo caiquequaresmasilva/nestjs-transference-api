@@ -1,6 +1,6 @@
 import { IsNotEmpty, Length, Matches } from 'class-validator';
 
-export class CreateClientDTO {
+export class ClientDTO {
   @IsNotEmpty()
   @Length(3)
   username: string;

@@ -1,1 +1,1 @@
-export * from './CreateClientDTO';
+export * from './ClientDTO';
