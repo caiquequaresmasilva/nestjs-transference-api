@@ -14,15 +14,19 @@ export class InMemoryTransactionRepository implements TransactionRepository {
   }
   async filterTransactions(
     accountId: string,
-    date: string,
+    date?: string,
     operation?: string | undefined,
   ): Promise<Transaction[]> {
-    const start = new Date(date);
-    const end = new Date(date);
-    end.setUTCDate(end.getUTCDate() + 1);
-    const transactions = (await this.findManyByAccountId(accountId)).filter(
-      ({ createdAt }) => start <= createdAt && end >= createdAt,
-    );
+    let transactions = await this.findManyByAccountId(accountId);
+    if (date) {
+      const start = new Date(date);
+      const end = new Date(date);
+      end.setUTCDate(end.getUTCDate() + 1);
+      transactions = transactions.filter(
+        ({ createdAt }) => start <= createdAt && end >= createdAt,
+      );
+    }
+
     if (operation) {
       const account =
         operation === 'cash-out' ? 'debitedAccount' : 'creditedAccount';

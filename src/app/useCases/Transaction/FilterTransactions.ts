@@ -6,7 +6,7 @@ type Operation = 'cash-in' | 'cash-out';
 
 interface FilterTransactionsRequest {
   accountId: string;
-  date: string;
+  date?: string;
   operation?: Operation;
 }
 

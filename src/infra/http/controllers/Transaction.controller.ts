@@ -24,7 +24,7 @@ export class TransactionController {
     return { transactions: transactions.map(TransactionView.toHTTP) };
   }
 
-  @Get()
+  @Get('filter')
   async handleFilterTransactions(@Req() req) {
     const {
       user: { accountId },

@@ -5,7 +5,7 @@ export abstract class TransactionRepository {
   abstract findManyByAccountId(accountId: string): Promise<Transaction[]>;
   abstract filterTransactions(
     accountId: string,
-    date: string,
+    date?: string,
     operation?: string,
   ): Promise<Transaction[]>;
 }

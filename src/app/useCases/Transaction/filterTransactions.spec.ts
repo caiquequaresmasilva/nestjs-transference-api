@@ -31,6 +31,20 @@ describe('Filter transactions', () => {
     expect(transactions.length).toEqual(2);
   });
 
+  it('Should be able to filter transactions by operation', async () => {
+    let res = await mockedFilterTransactions.execute({
+      accountId: client.account.id,
+      operation: 'cash-out',
+    });
+    expect(res.transactions).toHaveLength(1);
+
+    res = await mockedFilterTransactions.execute({
+      accountId: client.account.id,
+      operation: 'cash-in',
+    });
+    expect(res.transactions).toHaveLength(2);
+  });
+
   it('Should be able to filter transactions by date and operation=cash-out', async () => {
     const { transactions } = await mockedFilterTransactions.execute({
       accountId: client.account.id,
