@@ -1,6 +1,7 @@
 export * from './makeClient';
 export * from './makeInMemoryCreateClient';
 export * from './makeMockedCashOut';
+export * from './makeMockedClientController';
 export * from './makeMockedFilterTransactions';
 export * from './makeMockedGetBalance';
 export * from './makeMockedGetTransactions';
