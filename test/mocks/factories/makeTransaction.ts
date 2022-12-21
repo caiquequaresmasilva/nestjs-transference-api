@@ -1,7 +1,7 @@
 import { Transaction, TransactionProps } from '@domain/Transaction';
 import { makeClient } from './makeClient';
 
-export function makeTransaction(override: Partial<TransactionProps>) {
+export function makeTransaction(override: Partial<TransactionProps> = {}) {
   const debitedClient = makeClient({ username: 'Debited Client' });
   const creditedClient = makeClient({ username: 'Credited Client' });
 
