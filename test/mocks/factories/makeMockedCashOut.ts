@@ -1,4 +1,4 @@
-import { CashOut } from '@app/useCases/Account';
+import { CashOut } from '@app/useCases/Transaction';
 import {
   InMemoryClientRepository,
   InMemoryTransactionRepository,
