@@ -3,7 +3,8 @@ import {
   FilterTransactions,
   GetTransactions,
 } from '@app/useCases/Transaction';
-import { Controller, Get, Post, Req } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req } from '@nestjs/common';
+import { CashOutDTO } from '../dto';
 import { TransactionView } from '../view-models';
 
 @Controller('transactions')
@@ -38,11 +39,11 @@ export class TransactionController {
   }
 
   @Post('cash-out')
-  async handleCashOut(@Req() req) {
+  async handleCashOut(@Req() req, @Body() body: CashOutDTO) {
     const {
       user: { username },
-      body: { amount, toClientUsername },
     } = req;
+    const { amount, toClientUsername } = body;
     const { transaction } = await this.cashOut.execute({
       fromClientUsername: username,
       toClientUsername,
