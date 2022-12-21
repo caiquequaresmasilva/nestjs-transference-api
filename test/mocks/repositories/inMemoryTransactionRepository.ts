@@ -12,4 +12,22 @@ export class InMemoryTransactionRepository implements TransactionRepository {
       [creditedAccount.id, debitedAccount.id].includes(accountId),
     );
   }
+  async filterTransactions(
+    accountId: string,
+    date: string,
+    operation?: string | undefined,
+  ): Promise<Transaction[]> {
+    const start = new Date(date);
+    const end = new Date(date);
+    end.setUTCDate(end.getUTCDate() + 1);
+    const transactions = this.transactions.filter(
+      ({ createdAt }) => start <= createdAt && end >= createdAt,
+    );
+    if (operation) {
+      const account =
+        operation === 'cash-out' ? 'debitedAccount' : 'creditedAccount';
+      return transactions.filter((item) => item[account].id === accountId);
+    }
+    return transactions;
+  }
 }
