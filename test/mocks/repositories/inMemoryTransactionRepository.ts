@@ -20,7 +20,7 @@ export class InMemoryTransactionRepository implements TransactionRepository {
     const start = new Date(date);
     const end = new Date(date);
     end.setUTCDate(end.getUTCDate() + 1);
-    const transactions = this.transactions.filter(
+    const transactions = (await this.findManyByAccountId(accountId)).filter(
       ({ createdAt }) => start <= createdAt && end >= createdAt,
     );
     if (operation) {
