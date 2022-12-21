@@ -1,1 +1,1 @@
-export * from './ClientController.controller';
+export * from './Client.controller';

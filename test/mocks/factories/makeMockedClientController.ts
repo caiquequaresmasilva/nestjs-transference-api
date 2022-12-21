@@ -1,5 +1,5 @@
 import { CreateClient, LoginClient } from '@app/useCases/Client';
-import { ClientController } from '@infra/http/controllers/ClientController.controller';
+import { ClientController } from '@infra/http/controllers/Client.controller';
 import { InMemoryHashService, MockedTokenService } from '../adapters';
 import { InMemoryClientRepository } from '../repositories';
 
