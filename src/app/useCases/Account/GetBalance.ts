@@ -1,5 +1,6 @@
 import { NotFoundError } from '@app/errors';
 import { AccountRepository } from '@app/repositories';
+import { Injectable } from '@nestjs/common';
 
 interface GetBalanceRequest {
   accountId: string;
@@ -8,7 +9,7 @@ interface GetBalanceRequest {
 interface GetBalanceResponse {
   balance: number;
 }
-
+@Injectable()
 export class GetBalance {
   constructor(private readonly accountRepository: AccountRepository) {}
 

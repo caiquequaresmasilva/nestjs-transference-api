@@ -1,5 +1,6 @@
 import { TransactionRepository } from '@app/repositories';
 import { Transaction } from '@domain/Transaction';
+import { Injectable } from '@nestjs/common';
 
 interface GetTransactionsRequest {
   accountId: string;
@@ -8,7 +9,7 @@ interface GetTransactionsRequest {
 interface GetTransactionsResponse {
   transactions: Transaction[];
 }
-
+@Injectable()
 export class GetTransactions {
   constructor(private readonly transactionRepository: TransactionRepository) {}
 

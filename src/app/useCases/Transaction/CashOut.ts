@@ -1,6 +1,7 @@
 import { NotFoundError } from '@app/errors';
 import { ClientRepository, TransactionRepository } from '@app/repositories';
 import { Transaction } from '@domain/Transaction';
+import { Injectable } from '@nestjs/common';
 
 interface CashOutRequest {
   fromClientUsername: string;
@@ -11,7 +12,7 @@ interface CashOutRequest {
 interface CashOutResponse {
   transaction: Transaction;
 }
-
+@Injectable()
 export class CashOut {
   constructor(
     private readonly clientRepository: ClientRepository,

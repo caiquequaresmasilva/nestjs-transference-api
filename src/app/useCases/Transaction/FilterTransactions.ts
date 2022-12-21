@@ -1,5 +1,6 @@
 import { TransactionRepository } from '@app/repositories';
 import { Transaction } from '@domain/Transaction';
+import { Injectable } from '@nestjs/common';
 
 type Operation = 'cash-in' | 'cash-out';
 
@@ -12,7 +13,7 @@ interface FilterTransactionsRequest {
 interface FilterTransactionsResponse {
   transactions: Transaction[];
 }
-
+@Injectable()
 export class FilterTransactions {
   constructor(private readonly transactionRepository: TransactionRepository) {}
 

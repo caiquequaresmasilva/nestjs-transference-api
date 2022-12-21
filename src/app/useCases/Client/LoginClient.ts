@@ -1,6 +1,7 @@
 import { HashService, TokenService } from '@app/adapters';
 import { InvalidFieldsError } from '@app/errors';
 import { ClientRepository } from '@app/repositories';
+import { Injectable } from '@nestjs/common';
 
 interface LoginClientRequest {
   username: string;
@@ -10,7 +11,7 @@ interface LoginClientRequest {
 interface LoginClientResponse {
   token: string;
 }
-
+@Injectable()
 export class LoginClient {
   constructor(
     private readonly clientRepository: ClientRepository,
