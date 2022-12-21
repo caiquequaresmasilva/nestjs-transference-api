@@ -25,7 +25,7 @@
       "@helpers/*": ["./src/helpers/*"],
       "@infra/*": ["./src/infra/*"],
       "@test/*": ["./test/*"],
-      "@domain/*": ["./test/*"]
+      "@domain/*": ["./src/domain/*"]
     }
   }
 }
