@@ -1,10 +1,20 @@
+import { NotFoundError } from '@app/errors';
+import { InvalidTransactionError } from '@domain/errors';
 import {
   CashOut,
   FilterTransactions,
   GetTransactions,
 } from '@app/useCases/Transaction';
 import { JwtAuthGuard } from '@infra/auth/JwtAuthGuard';
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpException,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { CashOutDTO } from '../dto';
 import { TransactionView } from '../view-models';
 
@@ -16,6 +26,7 @@ export class TransactionController {
     private readonly filterTransactions: FilterTransactions,
     private readonly cashOut: CashOut,
   ) {}
+  private statusCode = 500;
 
   @Get()
   async handleGetTransactions(@Req() req: any) {
@@ -46,11 +57,24 @@ export class TransactionController {
       user: { username },
     } = req;
     const { amount, toClientUsername } = body;
-    const { transaction } = await this.cashOut.execute({
-      fromClientUsername: username,
-      toClientUsername,
-      amount,
-    });
-    return { transaction: TransactionView.toHTTP(transaction) };
+    try {
+      const { transaction } = await this.cashOut.execute({
+        fromClientUsername: username,
+        toClientUsername,
+        amount,
+      });
+      return { transaction: TransactionView.toHTTP(transaction) };
+    } catch (e) {
+      if (e instanceof NotFoundError) {
+        this.statusCode = 404;
+      }
+      if (e instanceof InvalidTransactionError) {
+        this.statusCode = 400;
+      }
+      throw new HttpException(
+        (<Error>e).message || 'Internal server error',
+        this.statusCode,
+      );
+    }
   }
 }

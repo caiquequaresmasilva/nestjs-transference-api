@@ -7,6 +7,7 @@ import { ClientView } from '../view-models';
 @Controller('clients')
 export class ClientController {
   constructor(private readonly createCliente: CreateClient) {}
+  private statusCode = 500;
 
   @Post()
   async create(@Body() body: ClientDTO) {
@@ -18,13 +19,12 @@ export class ClientController {
       });
       return { client: ClientView.toHTTP(client) };
     } catch (e) {
-      let statusCode = 500;
       if (e instanceof InvalidFieldsError) {
-        statusCode = 400;
+        this.statusCode = 400;
       }
       throw new HttpException(
         (<Error>e).message || 'Internal server error',
-        statusCode,
+        this.statusCode,
       );
     }
   }

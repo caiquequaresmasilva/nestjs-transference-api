@@ -1,17 +1,30 @@
+import { NotFoundError } from '@app/errors';
 import { GetBalance } from '@app/useCases/Account';
 import { JwtAuthGuard } from '@infra/auth/JwtAuthGuard';
-import { Controller, Get, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, HttpException, Req, UseGuards } from '@nestjs/common';
 @Controller('accounts')
 @UseGuards(JwtAuthGuard)
 export class AccountController {
   constructor(private readonly getBalance: GetBalance) {}
+  private statusCode = 500;
 
   @Get()
   async balance(@Req() req: any) {
     const {
       user: { accountId },
     } = req;
-    const { balance } = await this.getBalance.execute({ accountId });
-    return { balance };
+
+    try {
+      const { balance } = await this.getBalance.execute({ accountId });
+      return { balance };
+    } catch (e) {
+      if (e instanceof NotFoundError) {
+        this.statusCode = 404;
+      }
+      throw new HttpException(
+        (<Error>e).message || 'Internal server error',
+        this.statusCode,
+      );
+    }
   }
 }
