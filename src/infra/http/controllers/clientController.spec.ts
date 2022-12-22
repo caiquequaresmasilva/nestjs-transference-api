@@ -16,18 +16,4 @@ describe('ClientController', () => {
 
     expect(clientRepo.clients).toHaveLength(1);
   });
-
-  it('Should return an authentication token when the method "login" is called', async () => {
-    await clientController.create({
-      username: 'test client',
-      password: 'testePassword12!',
-    });
-    const response = await clientController.login({
-      username: 'test client',
-      password: 'testePassword12!',
-    });
-
-    expect(response).toHaveProperty('token');
-    expect(response.token).toEqual(expect.any(String));
-  });
 });

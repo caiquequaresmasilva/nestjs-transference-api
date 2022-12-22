@@ -6,6 +6,5 @@ export * from './makeMockedClientController';
 export * from './makeMockedFilterTransactions';
 export * from './makeMockedGetBalance';
 export * from './makeMockedGetTransactions';
-export * from './makeMockedLoginClient';
 export * from './makeMockedTransactionController';
 export * from './makeTransaction';
