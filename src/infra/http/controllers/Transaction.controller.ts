@@ -3,11 +3,13 @@ import {
   FilterTransactions,
   GetTransactions,
 } from '@app/useCases/Transaction';
-import { Body, Controller, Get, Post, Req } from '@nestjs/common';
+import { JwtAuthGuard } from '@infra/auth/JwtAuthGuard';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { CashOutDTO } from '../dto';
 import { TransactionView } from '../view-models';
 
 @Controller('transactions')
+@UseGuards(JwtAuthGuard)
 export class TransactionController {
   constructor(
     private readonly getTransactions: GetTransactions,

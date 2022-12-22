@@ -1,6 +1,8 @@
 import { GetBalance } from '@app/useCases/Account';
-import { Controller, Get, Req } from '@nestjs/common';
+import { JwtAuthGuard } from '@infra/auth/JwtAuthGuard';
+import { Controller, Get, Req, UseGuards } from '@nestjs/common';
 @Controller('accounts')
+@UseGuards(JwtAuthGuard)
 export class AccountController {
   constructor(private readonly getBalance: GetBalance) {}
 
