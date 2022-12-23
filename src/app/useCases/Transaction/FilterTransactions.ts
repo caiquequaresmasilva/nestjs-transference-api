@@ -2,7 +2,7 @@ import { TransactionRepository } from '@app/repositories';
 import { Transaction } from '@domain/Transaction';
 import { Injectable } from '@nestjs/common';
 
-type Operation = 'cash-in' | 'cash-out';
+export type Operation = 'cash-in' | 'cash-out';
 
 interface FilterTransactionsRequest {
   accountId: string;

@@ -4,6 +4,7 @@ import {
   CashOut,
   FilterTransactions,
   GetTransactions,
+  Operation,
 } from '@app/useCases/Transaction';
 import { JwtAuthGuard } from '@infra/auth/JwtAuthGuard';
 import {
@@ -12,14 +13,17 @@ import {
   Get,
   HttpException,
   Post,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { CashOutDTO } from '../dto';
+import { CashOutDTO, QueryDTO } from '../dto';
 import { TransactionView } from '../view-models';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('transactions')
 @UseGuards(JwtAuthGuard)
+@ApiBearerAuth()
 export class TransactionController {
   constructor(
     private readonly getTransactions: GetTransactions,
@@ -38,11 +42,12 @@ export class TransactionController {
   }
 
   @Get('filter')
-  async handleFilterTransactions(@Req() req) {
+  async handleFilterTransactions(@Req() req, @Query() query: QueryDTO) {
     const {
       user: { accountId },
-      query: { date, operation },
     } = req;
+    const { date } = query;
+    const operation = <Operation>query.operation;
     const { transactions } = await this.filterTransactions.execute({
       accountId,
       date,

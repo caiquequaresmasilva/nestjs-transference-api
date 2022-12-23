@@ -45,35 +45,45 @@ describe('TransactionController', () => {
       }),
       makeTransaction({ creditedAccount: client.account }),
     ];
-    let res = await transactionController.handleFilterTransactions({
-      user: { accountId: client.account.id },
-      query: { date },
-    });
+    let res = await transactionController.handleFilterTransactions(
+      {
+        user: { accountId: client.account.id },
+      },
+      { date },
+    );
     expect(res.transactions).toHaveLength(2);
 
-    res = await transactionController.handleFilterTransactions({
-      user: { accountId: client.account.id },
-      query: { operation: 'cash-out' },
-    });
+    res = await transactionController.handleFilterTransactions(
+      {
+        user: { accountId: client.account.id },
+      },
+      { operation: 'cash-out' },
+    );
 
     expect(res.transactions).toHaveLength(1);
 
-    res = await transactionController.handleFilterTransactions({
-      user: { accountId: client.account.id },
-      query: { operation: 'cash-in' },
-    });
+    res = await transactionController.handleFilterTransactions(
+      {
+        user: { accountId: client.account.id },
+      },
+      { operation: 'cash-in' },
+    );
     expect(res.transactions).toHaveLength(2);
 
-    res = await transactionController.handleFilterTransactions({
-      user: { accountId: client.account.id },
-      query: { operation: 'cash-out', date },
-    });
+    res = await transactionController.handleFilterTransactions(
+      {
+        user: { accountId: client.account.id },
+      },
+      { operation: 'cash-out', date },
+    );
     expect(res.transactions).toHaveLength(1);
 
-    res = await transactionController.handleFilterTransactions({
-      user: { accountId: client.account.id },
-      query: { operation: 'cash-in', date },
-    });
+    res = await transactionController.handleFilterTransactions(
+      {
+        user: { accountId: client.account.id },
+      },
+      { operation: 'cash-in', date },
+    );
     expect(res.transactions).toHaveLength(1);
   });
 
