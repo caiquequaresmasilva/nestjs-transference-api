@@ -1,6 +1,6 @@
 import { InvalidFieldsError } from '@app/errors';
 import { CreateClient } from '@app/useCases/Client';
-import { Body, Controller, HttpException, Post } from '@nestjs/common';
+import { Body, Controller, HttpException, Logger, Post } from '@nestjs/common';
 import { ClientDTO } from '../dto';
 import { ClientView } from '../view-models';
 
@@ -8,6 +8,7 @@ import { ClientView } from '../view-models';
 export class ClientController {
   constructor(private readonly createCliente: CreateClient) {}
   private statusCode = 500;
+  private readonly logger = new Logger(ClientController.name);
 
   @Post()
   async create(@Body() body: ClientDTO) {
@@ -17,11 +18,13 @@ export class ClientController {
         username,
         password,
       });
+      this.logger.log(`Client ${username} created`);
       return { client: ClientView.toHTTP(client) };
     } catch (e) {
       if (e instanceof InvalidFieldsError) {
         this.statusCode = 400;
       }
+      this.logger.error((<Error>e).stack);
       throw new HttpException(
         (<Error>e).message || 'Internal server error',
         this.statusCode,

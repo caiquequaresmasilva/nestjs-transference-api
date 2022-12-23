@@ -12,6 +12,7 @@ import {
   Controller,
   Get,
   HttpException,
+  Logger,
   Post,
   Query,
   Req,
@@ -31,6 +32,7 @@ export class TransactionController {
     private readonly cashOut: CashOut,
   ) {}
   private statusCode = 500;
+  private readonly logger = new Logger(TransactionController.name);
 
   @Get()
   async handleGetTransactions(@Req() req: any) {
@@ -38,6 +40,7 @@ export class TransactionController {
       user: { accountId },
     } = req;
     const { transactions } = await this.getTransactions.execute({ accountId });
+    this.logger.log(`Client ${req.user.username} checked his transactions`);
     return { transactions: transactions.map(TransactionView.toHTTP) };
   }
 
@@ -53,6 +56,7 @@ export class TransactionController {
       date,
       operation,
     });
+    this.logger.log(`Client ${req.user.username} checked his transactions`);
     return { transactions: transactions.map(TransactionView.toHTTP) };
   }
 
@@ -68,6 +72,9 @@ export class TransactionController {
         toClientUsername,
         amount,
       });
+      this.logger.log(
+        `Client ${req.user.username} made a cash-out of ${amount} to ${toClientUsername}`,
+      );
       return { transaction: TransactionView.toHTTP(transaction) };
     } catch (e) {
       if (e instanceof NotFoundError) {
@@ -76,6 +83,7 @@ export class TransactionController {
       if (e instanceof InvalidTransactionError) {
         this.statusCode = 400;
       }
+      this.logger.error((<Error>e).stack);
       throw new HttpException(
         (<Error>e).message || 'Internal server error',
         this.statusCode,
