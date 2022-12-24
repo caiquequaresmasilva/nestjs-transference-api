@@ -20,5 +20,7 @@ USER node
 FROM node:18-alpine As production
 COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules
 COPY --chown=node:node --from=build /usr/src/app/dist ./dist
-CMD [ "node", "dist/main.js" ]
+COPY --chown=node:node --from=build /usr/src/app/prisma ./prisma
+COPY --chown=node:node --from=build /usr/src/app/package*.json ./
+CMD ["npm","run","start:prod"]
 
