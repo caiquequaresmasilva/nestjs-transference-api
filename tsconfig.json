@@ -6,7 +6,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "target": "es2017",
+    "target": "ES2018",
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
@@ -27,5 +27,6 @@
       "@test/*": ["./test/*"],
       "@domain/*": ["./src/domain/*"]
     }
-  }
+  },
+  "include": ["src/**/*"]
 }
