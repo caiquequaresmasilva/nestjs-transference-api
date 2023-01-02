@@ -28,5 +28,5 @@
       "@domain/*": ["./src/domain/*"]
     }
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*","test/**/*"]
 }
