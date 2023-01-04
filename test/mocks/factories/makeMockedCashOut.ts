@@ -4,16 +4,8 @@ import {
   InMemoryTransactionRepository,
 } from '../repositories';
 
-export function makeMockedCashOut(): [
-  CashOut,
-  InMemoryClientRepository,
-  InMemoryTransactionRepository,
-] {
+export function makeMockedCashOut(): CashOut {
   const inMemoryClientRepository = new InMemoryClientRepository();
   const inMemoryTransactionRepository = new InMemoryTransactionRepository();
-  return [
-    new CashOut(inMemoryClientRepository, inMemoryTransactionRepository),
-    inMemoryClientRepository,
-    inMemoryTransactionRepository,
-  ];
+  return new CashOut(inMemoryClientRepository, inMemoryTransactionRepository);
 }

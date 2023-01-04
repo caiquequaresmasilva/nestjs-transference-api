@@ -3,15 +3,15 @@ import {
   makeMockedFilterTransactions,
   makeTransaction,
 } from '@test/mocks/factories';
+import { InMemoryData } from '@test/mocks/repositories/inMemoryData';
 
 describe('Filter transactions', () => {
-  const [mockedFilterTransactions, transactionRepo] =
-    makeMockedFilterTransactions();
+  const mockedFilterTransactions = makeMockedFilterTransactions();
   const client = makeClient();
   const date = '2022-12-10';
 
   beforeEach(() => {
-    transactionRepo.transactions = [
+    InMemoryData.transactions = [
       makeTransaction({
         creditedAccount: client.account,
         createdAt: new Date(date),

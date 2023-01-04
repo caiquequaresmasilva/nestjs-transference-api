@@ -1,17 +1,17 @@
 import { NotFoundError } from '@app/errors';
 import { makeClient, makeMockedCashOut } from '@test/mocks/factories';
+import { InMemoryData } from '@test/mocks/repositories/inMemoryData';
 
 describe('Cash-out', () => {
-  const [mockedCashOut, clientRepo, transactionRepo] = makeMockedCashOut();
+  const mockedCashOut = makeMockedCashOut();
   const fromClient = makeClient({ username: 'From Client' });
   const toClient = makeClient({ username: 'To Client' });
   const amount = 30;
   beforeEach(() => {
-    clientRepo.clients = [];
-    transactionRepo.transactions = [];
+    InMemoryData.clear();
   });
   it('Should be able to do a cash-out transaction', async () => {
-    clientRepo.clients = [fromClient, toClient];
+    InMemoryData.clients = [fromClient, toClient];
     const { transaction } = await mockedCashOut.execute({
       amount,
       fromClientUsername: fromClient.username,
@@ -22,8 +22,8 @@ describe('Cash-out', () => {
     expect(transaction.debitedAccount.id).toEqual(fromClient.account.id);
     expect(transaction.createdAt).toEqual(expect.any(Date));
 
-    expect(transactionRepo.transactions.length).toEqual(1);
-    expect(transactionRepo.transactions[0]).toEqual(transaction);
+    expect(InMemoryData.transactions.length).toEqual(1);
+    expect(InMemoryData.transactions[0]).toEqual(transaction);
   });
 
   it('Should not be able to cash-out when debited client does not exist', async () => {
@@ -37,7 +37,7 @@ describe('Cash-out', () => {
   });
 
   it('Should not be able to cash-out when credited client does not exist', async () => {
-    clientRepo.clients = [fromClient];
+    InMemoryData.clients = [fromClient];
     expect(() =>
       mockedCashOut.execute({
         amount,

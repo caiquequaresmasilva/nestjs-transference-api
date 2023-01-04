@@ -9,11 +9,7 @@ import {
 } from '../repositories';
 import { TransactionController } from '@infra/http/controllers';
 
-export function makeMockedTransactionController(): [
-  TransactionController,
-  InMemoryTransactionRepository,
-  InMemoryClientRepository,
-] {
+export function makeMockedTransactionController(): TransactionController {
   const clientRepo = new InMemoryClientRepository();
   const transactionRepo = new InMemoryTransactionRepository();
   const getTransactions = new GetTransactions(transactionRepo);
@@ -24,5 +20,5 @@ export function makeMockedTransactionController(): [
     filterTransactions,
     cashOut,
   );
-  return [transactionController, transactionRepo, clientRepo];
+  return transactionController;
 }

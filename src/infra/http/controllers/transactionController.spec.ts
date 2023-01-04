@@ -3,17 +3,16 @@ import {
   makeMockedTransactionController,
   makeTransaction,
 } from '@test/mocks/factories';
+import { InMemoryData } from '@test/mocks/repositories/inMemoryData';
 
 describe('TransactionController', () => {
-  const [transactionController, transactionRepo, clientRepo] =
-    makeMockedTransactionController();
+  const transactionController = makeMockedTransactionController();
   beforeEach(() => {
-    transactionRepo.transactions = [];
-    clientRepo.clients = [];
+    InMemoryData.clear();
   });
   it('Should be able to return the transactions of a logged client', async () => {
     const client = makeClient();
-    transactionRepo.transactions = [
+    InMemoryData.transactions = [
       makeTransaction({ debitedAccount: client.account }),
       makeTransaction({ creditedAccount: client.account }),
       makeTransaction(),
@@ -34,7 +33,7 @@ describe('TransactionController', () => {
     const client = makeClient();
     const date = '2022-12-10';
 
-    transactionRepo.transactions = [
+    InMemoryData.transactions = [
       makeTransaction({
         creditedAccount: client.account,
         createdAt: new Date(date),
@@ -90,16 +89,16 @@ describe('TransactionController', () => {
   it('Should be able to cash-out and return the transaction created', async () => {
     const fromclient = makeClient({ username: 'from client' });
     const toClient = makeClient({ username: 'to client' });
-    clientRepo.clients = [fromclient, toClient];
+    InMemoryData.clients = [fromclient, toClient];
 
-    expect(transactionRepo.transactions).toHaveLength(0);
+    expect(InMemoryData.transactions).toHaveLength(0);
 
     const { transaction } = await transactionController.handleCashOut(
       { user: { username: fromclient.username } },
       { amount: 30, toClientUsername: toClient.username },
     );
 
-    expect(transactionRepo.transactions).toHaveLength(1);
+    expect(InMemoryData.transactions).toHaveLength(1);
     expect(transaction).toEqual(
       expect.objectContaining({
         debitedAccountId: fromclient.account.id,

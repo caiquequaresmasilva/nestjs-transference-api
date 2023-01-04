@@ -1,9 +1,10 @@
 import { makeMockedClientController } from '@test/mocks/factories';
+import { InMemoryData } from '@test/mocks/repositories/inMemoryData';
 
 describe('ClientController', () => {
-  const [clientController, clientRepo] = makeMockedClientController();
+  const clientController = makeMockedClientController();
   beforeEach(() => {
-    clientRepo.clients = [];
+    InMemoryData.clear();
   });
   it('Should create a new client when the method "create" is called', async () => {
     const { client } = await clientController.create({
@@ -14,6 +15,6 @@ describe('ClientController', () => {
     expect(client).toHaveProperty('id');
     expect(client).toHaveProperty('accountId');
 
-    expect(clientRepo.clients).toHaveLength(1);
+    expect(InMemoryData.clients).toHaveLength(1);
   });
 });
