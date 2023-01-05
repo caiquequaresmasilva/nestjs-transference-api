@@ -162,4 +162,12 @@ describe('TransactionController (e2e)', () => {
       }),
     );
   });
+  it('/transactions (GET) Return error message when auth token is not valid', async () => {
+    const res = await request(appServer)
+      .get('/transactions')
+      .set('Authorization', 'Bearer fail-token');
+
+    expect(res.status).toBe(401);
+    expect(res.body).toHaveProperty('message', 'Unauthorized');
+  });
 });

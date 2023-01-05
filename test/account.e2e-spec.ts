@@ -51,4 +51,13 @@ describe('AccountController (e2e)', () => {
     expect(res.status).toBe(404);
     expect(res.body).toHaveProperty('message', 'Account not found');
   });
+
+  it('/accounts (GET) Return error message when auth token not is not valid', async () => {
+    const res = await request(appServer)
+      .get('/accounts')
+      .set('Authorization', 'Bearer fail-token');
+
+    expect(res.status).toBe(401);
+    expect(res.body).toHaveProperty('message', 'Unauthorized');
+  });
 });
