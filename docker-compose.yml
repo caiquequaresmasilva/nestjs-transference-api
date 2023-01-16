@@ -1,0 +1,44 @@
+version: '3.9'
+services:
+  transference-api:
+    container_name: transference-api
+    build: ./
+    ports:
+      - ${PORT}:${PORT}
+    networks:
+      - transference-net
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      - PORT=${PORT}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_HOST=database
+      - DB_PORT=${DB_PORT}
+      - DB_USER=${DB_USER}
+      - TOKEN_SECRET=${TOKEN_SECRET}
+      - DATABASE_URL=mysql://${DB_USER}:${DB_PASSWORD}@database:${DB_PORT}/${DB_NAME}?createDatabaseIfNotExist=true
+  database:
+    image: mysql
+    container_name: database
+    restart: unless-stopped
+    env_file: ./.env
+    volumes:
+      - db:/var/lib/mysql
+    networks:
+      - transference-net
+    environment:
+      - MYSQL_ROOT_PASSWORD=$DB_PASSWORD
+      - MYSQL_DATABASE=${DB_NAME}
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 5
+    ports:
+      - 3306:3306
+  
+networks:
+  transference-net:
+    driver: bridge
+volumes:
+  db:

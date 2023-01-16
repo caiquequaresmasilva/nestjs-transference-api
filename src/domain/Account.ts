@@ -1,5 +1,5 @@
 import { BaseEntity } from './BaseEntity';
-import { InsufficientBalanceError } from './errors';
+import { InvalidTransactionError } from './errors';
 
 export interface AccountProps {
   balance: number;
@@ -15,7 +15,7 @@ export class Account extends BaseEntity<AccountProps> {
 
   public debitAmount(amount: number) {
     if (amount > this.props.balance) {
-      throw new InsufficientBalanceError();
+      throw new InvalidTransactionError('Insufficient balance');
     }
     this.props.balance -= amount;
   }

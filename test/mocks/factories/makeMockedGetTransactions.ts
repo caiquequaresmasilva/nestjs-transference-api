@@ -1,10 +1,7 @@
 import { InMemoryTransactionRepository } from '../repositories';
 import { GetTransactions } from '@app/useCases/Transaction';
 
-export function makeMockedGetTrasactions(): [
-  GetTransactions,
-  InMemoryTransactionRepository,
-] {
+export function makeMockedGetTrasactions(): GetTransactions {
   const transactionsRepo = new InMemoryTransactionRepository();
-  return [new GetTransactions(transactionsRepo), transactionsRepo];
+  return new GetTransactions(transactionsRepo);
 }

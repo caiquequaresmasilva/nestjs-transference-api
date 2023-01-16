@@ -3,15 +3,15 @@ import {
   makeMockedFilterTransactions,
   makeTransaction,
 } from '@test/mocks/factories';
+import { InMemoryData } from '@test/mocks/repositories/inMemoryData';
 
 describe('Filter transactions', () => {
-  const [mockedFilterTransactions, transactionRepo] =
-    makeMockedFilterTransactions();
+  const mockedFilterTransactions = makeMockedFilterTransactions();
   const client = makeClient();
   const date = '2022-12-10';
 
   beforeEach(() => {
-    transactionRepo.transactions = [
+    InMemoryData.transactions = [
       makeTransaction({
         creditedAccount: client.account,
         createdAt: new Date(date),
@@ -29,6 +29,20 @@ describe('Filter transactions', () => {
       date,
     });
     expect(transactions.length).toEqual(2);
+  });
+
+  it('Should be able to filter transactions by operation', async () => {
+    let res = await mockedFilterTransactions.execute({
+      accountId: client.account.id,
+      operation: 'cash-out',
+    });
+    expect(res.transactions).toHaveLength(1);
+
+    res = await mockedFilterTransactions.execute({
+      accountId: client.account.id,
+      operation: 'cash-in',
+    });
+    expect(res.transactions).toHaveLength(2);
   });
 
   it('Should be able to filter transactions by date and operation=cash-out', async () => {

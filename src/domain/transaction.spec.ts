@@ -1,5 +1,5 @@
 import { Account } from './Account';
-import { InsufficientBalanceError, InvalidTransactionError } from './errors';
+import { InvalidTransactionError } from './errors';
 import { Transaction } from './Transaction';
 
 describe('Transaction domain entity', () => {
@@ -33,7 +33,7 @@ describe('Transaction domain entity', () => {
     });
 
     expect(() => transaction.executeTransference()).toThrow(
-      InsufficientBalanceError,
+      InvalidTransactionError,
     );
   });
 

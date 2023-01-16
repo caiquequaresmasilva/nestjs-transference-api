@@ -1,5 +1,5 @@
 export class InvalidTransactionError extends Error {
-  constructor() {
-    super('Invalid transaction');
+  constructor(message = 'Invalid transaction') {
+    super(message);
   }
 }

@@ -1,14 +1,15 @@
 import { NotFoundError } from '@app/errors';
 import { makeClient, makeMockedGetBalance } from '@test/mocks/factories';
+import { InMemoryData } from '@test/mocks/repositories/inMemoryData';
 
 describe('Get balance', () => {
-  const [mockedGetBalance, inMemoryRepository] = makeMockedGetBalance();
+  const mockedGetBalance = makeMockedGetBalance();
   const client = makeClient();
   beforeEach(() => {
-    inMemoryRepository.accounts = [];
+    InMemoryData.clear();
   });
   it('Should be able to return the balance of the client', async () => {
-    inMemoryRepository.accounts.push(client.account);
+    InMemoryData.accounts.push(client.account);
     const { balance } = await mockedGetBalance.execute({
       accountId: client.account.id,
     });

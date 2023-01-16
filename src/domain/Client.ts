@@ -9,9 +9,9 @@ export interface ClientProps {
 export class Client extends BaseEntity<ClientProps> {
   private _account: Account;
 
-  constructor(props: ClientProps, id?: string) {
+  constructor(props: ClientProps, id?: string, account?: Account) {
     super(props, id);
-    this._account = new Account();
+    this._account = account ?? new Account();
   }
 
   public get id(): string {

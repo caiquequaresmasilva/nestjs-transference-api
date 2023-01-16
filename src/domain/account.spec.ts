@@ -1,5 +1,5 @@
 import { Account } from './Account';
-import { InsufficientBalanceError } from './errors';
+import { InvalidTransactionError } from './errors';
 
 describe('Account domain entity', () => {
   it('Should be able to create an account with a default balance of 100', () => {
@@ -22,6 +22,6 @@ describe('Account domain entity', () => {
 
   it('Should not be able to do a debit operation when there is not sufficient balance', () => {
     const account = new Account();
-    expect(() => account.debitAmount(200)).toThrow(InsufficientBalanceError);
+    expect(() => account.debitAmount(200)).toThrow(InvalidTransactionError);
   });
 });
